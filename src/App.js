@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import { Board } from "./components/Board";
+import { ScoreBoard } from "./components/ScoreBoard";
 
 export default function App() {
   const WIN_CONDITIONS = [
@@ -16,6 +17,8 @@ export default function App() {
 
   const [boardList, setBoard] = useState(Array(9).fill(null));
   const [xPlaying, setXPlaying] = useState(true);
+  const [scores, setScores] = useState({ xScore: 0, oScore: 0 });
+  const [gameOver, setGameOver] = useState(false);
 
   const handleBoxClick = (boxIdx) => {
     const updateBoard = boardList.map((value, idx) => {
@@ -25,7 +28,20 @@ export default function App() {
         return value;
       }
     });
-    checkWinner(updateBoard);
+    const winner = checkWinner(updateBoard);
+    if (winner) {
+      if (winner === "o") {
+        let { oScore } = scores;
+        oScore += 1;
+        setScores({ ...scores, oScore }); //keeps all the values and the new value of all scores
+      } else {
+        let { xScore } = scores;
+        xScore += 1;
+        setScores({ ...scores, xScore });
+      }
+    }
+    console.log(scores);
+
     setBoard(updateBoard);
     setXPlaying(!xPlaying);
   };
@@ -39,16 +55,22 @@ export default function App() {
         boardList[x] === boardList[y] &&
         boardList[y] === boardList[z]
       ) {
-        console.log(boardList[x]);
+        setGameOver(true);
         return boardList[x];
       }
     }
   };
 
+  const resetBoard = () => {
+    setGameOver(false);
+    setBoard(Array(9).fill(null))
+  }
+
   return (
     <div className="App">
       <h1>Tic Tac Toe App</h1>
-      <Board boardList={boardList} onClick={handleBoxClick} />
+      <ScoreBoard scores={scores} xPlaying={xPlaying} />
+      <Board boardList={boardList} onClick={gameOver ? resetBoard : handleBoxClick} />
 
       <footer>
         This project was coded by
