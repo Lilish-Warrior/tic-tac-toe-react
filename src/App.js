@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import "./App.css";
+
 import { Board } from "./components/Board";
 import { ScoreBoard } from "./components/ScoreBoard";
 import { ResetButton } from "./components/ResetButton";
+import "./App.css";
 
 export default function App() {
   const WIN_CONDITIONS = [
@@ -16,22 +17,27 @@ export default function App() {
     [2, 4, 6],
   ];
 
-  const [boardList, setBoard] = useState(Array(9).fill(null));
+  const [board, setBoard] = useState(Array(9).fill(null));
   const [xPlaying, setXPlaying] = useState(true);
   const [scores, setScores] = useState({ xScore: 0, oScore: 0 });
   const [gameOver, setGameOver] = useState(false);
 
   const handleBoxClick = (boxIdx) => {
-    const updateBoard = boardList.map((value, idx) => {
+    //step 1: Update the board
+    const updateBoard = board.map((value, idx) => {
       if (idx === boxIdx) {
-        return xPlaying === true ? "X" : "O";
+        return xPlaying ? "X" : "O";
       } else {
         return value;
       }
     });
+    setBoard(updateBoard);
+
+    //Step 2: Check if either player has won the game
     const winner = checkWinner(updateBoard);
+
     if (winner) {
-      if (winner === "o") {
+      if (winner === "O") {
         let { oScore } = scores;
         oScore += 1;
         setScores({ ...scores, oScore }); //keeps all the values and the new value of all scores
@@ -41,23 +47,20 @@ export default function App() {
         setScores({ ...scores, xScore });
       }
     }
-    console.log(scores);
 
-    setBoard(updateBoard);
+    //Step 3: Change active player
+
     setXPlaying(!xPlaying);
   };
 
-  const checkWinner = (boardList) => {
+  const checkWinner = (board) => {
     for (let i = 0; i < WIN_CONDITIONS.length; i++) {
       const [x, y, z] = WIN_CONDITIONS[i];
 
-      if (
-        boardList[x] &&
-        boardList[x] === boardList[y] &&
-        boardList[y] === boardList[z]
-      ) {
+      // Iterate through win conditions and check if either player satisfies them
+      if (board[x] && board[x] === board[y] && board[y] === board[z]) {
         setGameOver(true);
-        return boardList[x];
+        return board[x];
       }
     }
   };
@@ -71,21 +74,21 @@ export default function App() {
     <div className="App">
       <h1>Tic Tac Toe App</h1>
       <ScoreBoard scores={scores} xPlaying={xPlaying} />
-      <Board
-        boardList={boardList}
-        onClick={gameOver ? resetBoard : handleBoxClick}
-      />
+      <Board board={board} onClick={gameOver ? resetBoard : handleBoxClick} />
       <ResetButton resetBoard={resetBoard} />
 
       <footer>
         This project was coded by
-        <a
-          href="https://github.com/Lilish-Warrior/tic-tac-toe-react"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Lilish Warrior
-        </a>
+        <span>
+          {" "}
+          <a
+            href="https://github.com/Lilish-Warrior/tic-tac-toe-react"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Lilish Warrior
+          </a>
+        </span>
       </footer>
     </div>
   );

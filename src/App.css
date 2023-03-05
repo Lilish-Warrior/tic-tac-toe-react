@@ -2,6 +2,16 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0 auto;
+h1 {
+  text-align: center;
+  color: #ff4365;
+}
+
+a {
+  color: #ff4365;
+  text-decoration: none;
+}
+
+footer {
+  text-align: center;
 }
