@@ -8,7 +8,7 @@
   margin: 3rem auto;
   background-color: #fffff3;
   box-shadow: 0px 0px 8px #888;
-  border-radius: 0.5rem;
+  border-radius: 4px;
   font-weight: bold;
 }
 .score {
@@ -31,4 +31,12 @@
 
 .inactive {
   border-bottom: 5px solid transparent;
+}
+
+@media (max-width: 600px) {
+  .scoreboard {
+    width: 15rem;
+    font-size: 1.5em;
+    margin: 1rem auto;
+  }
 }
