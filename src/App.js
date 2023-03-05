@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import { Board } from "./components/Board";
 import { ScoreBoard } from "./components/ScoreBoard";
+import { ResetButton } from "./components/ResetButton";
 
 export default function App() {
   const WIN_CONDITIONS = [
@@ -63,14 +64,18 @@ export default function App() {
 
   const resetBoard = () => {
     setGameOver(false);
-    setBoard(Array(9).fill(null))
-  }
+    setBoard(Array(9).fill(null));
+  };
 
   return (
     <div className="App">
       <h1>Tic Tac Toe App</h1>
       <ScoreBoard scores={scores} xPlaying={xPlaying} />
-      <Board boardList={boardList} onClick={gameOver ? resetBoard : handleBoxClick} />
+      <Board
+        boardList={boardList}
+        onClick={gameOver ? resetBoard : handleBoxClick}
+      />
+      <ResetButton resetBoard={resetBoard} />
 
       <footer>
         This project was coded by

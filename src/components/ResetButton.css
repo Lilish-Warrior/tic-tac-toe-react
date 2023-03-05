@@ -1,0 +1,9 @@
+.reset-button {
+  display: block;
+  margin: 2rem auto;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: lightblue;
+  font-size: 2rem;
+  padding: 0.5rem auto;
+}
